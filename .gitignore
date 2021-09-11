@@ -1,0 +1,8 @@
+__pycache__
+LICENSE
+.env
+.pytest_cache
+.cache/
+.vscode/
+.coverage
+htmlcov
