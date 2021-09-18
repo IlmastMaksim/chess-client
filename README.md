@@ -9,3 +9,37 @@ This project is developed for Data Structures Lab course by University of Helsin
 - [Testing](./documentation/testing.md)
 - [User guide](./documentation/user_guide.md)
 - [Week reports](./documentation/week_reports.md)
+
+## Commands
+
+### Start the application
+
+```bash
+poetry run invoke start
+```
+
+### Test
+
+
+```bash
+poetry run invoke test
+```
+
+### Test coverage
+
+```bash
+poetry run invoke coverage-report
+```
+
+### Pylint
+
+```bash
+poetry run invoke lint
+```
+
+### Refactoring
+
+
+```bash
+poetry run invoke refactor
+```
