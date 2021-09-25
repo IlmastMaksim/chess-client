@@ -4,10 +4,10 @@ import pieces
 class Board:
     """Class, that is in charge for dealing with chess board"""
 
-    def __init__(self, x, y) -> None:
+    def __init__(self, x, y, positions_table=[]) -> None:
         self.x = x
         self.y = y
-        self.positions_table = []
+        self.positions_table = positions_table
 
     def initialize_game(self):
         """Initialization of the default settings of the game"""
@@ -78,3 +78,24 @@ class Board:
     def get_piece_position(self, x, y):
         """Returning the current piece position on board"""
         return self.positions_table[x][y]
+
+    def get_possible_moves(self, color="black"):
+        moves = []
+        for x in range(self.x):
+            for y in range(self.y):
+                piece = self.positions_table[x][y]
+                if piece != "-":
+                    if piece.color == color:
+                        if piece.type == "pawn":
+                            # print(piece)
+                            moves += piece.get_possible_moves(self.clone())
+        return moves
+
+    def clone(self):
+        cloned_positions_table = [["-" for _ in range(self.x)] for _ in range(self.y)]
+        for x in range(self.x):
+            for y in range(self.y):
+                piece = self.positions_table[x][y]
+                if piece != "-":
+                    cloned_positions_table[x][y] = piece.clone()
+        return Board(self.x, self.y, cloned_positions_table)

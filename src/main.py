@@ -5,6 +5,7 @@ if __name__ == "__main__":
     initialized_board.initialize_game()
     initialized_board.move_piece_to_position("a2-a3")
     initialized_board.draw_situation()
+    print(initialized_board.get_possible_moves())
     # while True:
     #    turn = input("Type your turn: ")
     #    initialized_board.draw_situation()

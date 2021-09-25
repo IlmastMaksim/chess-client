@@ -1,4 +1,4 @@
-# Reports and hour reporting for week 1
+# Reports and hour reporting for week 2
 
 ## Number of hours
 
