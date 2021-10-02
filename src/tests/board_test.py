@@ -21,3 +21,13 @@ class BoardTest(unittest.TestCase):
         self.board.initialize_game()
         self.board.move_piece_to_position("a2-a3")
         self.assertNotEqual(self.board.positions_table[ord("a") - 97][-int(3)], "-")
+
+    def test_clone(self):
+        self.board.initialize_game()
+        board_clone = self.board.clone()
+        self.assertEqual(board_clone.x, 8)
+
+    def test_get_possible_moves(self):
+        self.board.initialize_game()
+        moves = self.board.get_possible_moves()
+        self.assertEqual(len(moves), 14)

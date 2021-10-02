@@ -9,7 +9,7 @@ class Board:
         self.y = y
         self.positions_table = positions_table
 
-    def initialize_game(self):
+    def initialize_game(self) -> None:
         """Initialization of the default settings of the game"""
         self.positions_table = [["-" for _ in range(self.x)] for _ in range(self.y)]
         for x_pos in range(self.x):
@@ -44,11 +44,11 @@ class Board:
         self.positions_table[4][0] = pieces.King(4, 0, "black")
         self.positions_table[3][0] = pieces.Queen(3, 0, "black")
 
-    def draw_situation(self):
+    def draw_situation(self) -> str:
         """Drawing the current situation on board to the terminal"""
         situation = "     A  B  C  D  E  F  G  H\n"
         for vertical in range(self.y):
-            situation += str(8 - vertical) + "   "
+            situation += str(self.x - vertical) + "   "
             for horizontal in range(self.x):
                 piece = self.positions_table[horizontal][vertical]
                 if piece != "-":
@@ -58,7 +58,7 @@ class Board:
             situation += "\n"
         return situation + "\n"
 
-    def move_piece_to_position(self, turn):
+    def move_piece_to_position(self, turn) -> None:
         """Moving a piece on a certain position to some new position"""
         # example: a2-a3
         [old_position, new_position] = turn.split("-")
@@ -77,25 +77,34 @@ class Board:
 
     def get_piece_position(self, x, y):
         """Returning the current piece position on board"""
+        if not self.is_piece_blocked(x, y):
+            return
         return self.positions_table[x][y]
 
-    def get_possible_moves(self, color="black"):
+    def is_piece_blocked(self, x, y) -> bool:
+        """Checking if piece is blocked"""
+        return x < self.x and y < self.y and x >= 0 and y >= 0
+
+    def get_possible_moves(self, color="black") -> list:
+        """Returning possible moves for pieces on board with a certain color"""
         moves = []
         for x in range(self.x):
             for y in range(self.y):
                 piece = self.positions_table[x][y]
                 if piece != "-":
                     if piece.color == color:
-                        if piece.type == "pawn":
-                            # print(piece)
-                            moves += piece.get_possible_moves(self.clone())
-        return moves
+                        # if piece.type == "pawn":
+                        # print(piece)
+                        moves += piece.get_possible_moves(self.clone())
+        return list(filter(lambda move: move != 0, moves))
 
     def clone(self):
+        """Cloning the board for the evaluation of possible moves"""
         cloned_positions_table = [["-" for _ in range(self.x)] for _ in range(self.y)]
         for x in range(self.x):
             for y in range(self.y):
                 piece = self.positions_table[x][y]
                 if piece != "-":
-                    cloned_positions_table[x][y] = piece.clone()
+                    piece_clone = piece.clone()
+                    cloned_positions_table[x][y] = piece_clone
         return Board(self.x, self.y, cloned_positions_table)

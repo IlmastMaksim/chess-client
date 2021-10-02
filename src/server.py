@@ -5,7 +5,9 @@ import copy
 class Server:
     """Class, that corresponds to chess client bot. It contains tables for the evaluation of moves of various pieces."""
 
-    def evaluate_alphabeta(self, board_param, depth, max_best_score, min_best_score, maximizing):
+    def evaluate_alphabeta(
+        self, board_param, depth, max_best_score, min_best_score, maximizing
+    ):
         if depth == 0:
             return self.evaluate(board_param)
 
