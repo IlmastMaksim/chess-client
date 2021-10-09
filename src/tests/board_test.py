@@ -1,5 +1,6 @@
 import unittest
 from board import Board
+import tables
 
 
 class BoardTest(unittest.TestCase):
@@ -19,7 +20,8 @@ class BoardTest(unittest.TestCase):
 
     def test_move_piece_to_position(self):
         self.board.initialize_game()
-        self.board.move_piece_to_position("a2-a3")
+        move = self.board.convert_turn_string_to_move_coord("a2-a3")
+        self.board.move_piece_to_position(move)
         self.assertNotEqual(self.board.positions_table[ord("a") - 97][-int(3)], "-")
 
     def test_clone(self):
@@ -30,4 +32,20 @@ class BoardTest(unittest.TestCase):
     def test_get_possible_moves(self):
         self.board.initialize_game()
         moves = self.board.get_possible_moves()
-        self.assertEqual(len(moves), 14)
+        self.assertEqual(len(moves), 18)
+
+    def test_evaluate_piece_positions(self):
+        self.board.initialize_game()
+        move = self.board.convert_turn_string_to_move_coord("a2-a3")
+        self.board.move_piece_to_position(move)
+        evaluated_pawn_positions = self.board.evaluate_piece_positions("pawn", tables.pawn_table)
+        self.assertEqual(type(evaluated_pawn_positions), int)
+        
+    def test_evaluate_board(self):
+        self.board.initialize_game()
+        move = self.board.convert_turn_string_to_move_coord("a2-a3")
+        self.board.move_piece_to_position(move)
+        evaluated_board = self.board.evaluate_board()
+        self.assertEqual(type(evaluated_board), int)
+        self.assertEqual(evaluated_board, 15)
+

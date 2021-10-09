@@ -18,7 +18,7 @@ class Piece:
     def initialize_move(self, board, xto, yto) -> move.Move:
         """Checking if possible to create move for piece on position and creating if is"""
         initialized_move = 0
-        if board.is_piece_blocked(xto, yto):
+        if board.is_piece_blockaded(xto, yto):
             piece = board.get_piece_position(xto, yto)
             if piece != "-":
                 if piece.color != self.color:
@@ -32,7 +32,7 @@ class Piece:
         moves = []
 
         for i in range(1, board.x):
-            if not board.is_piece_blocked(self.x + i, self.y - i):
+            if not board.is_piece_blockaded(self.x + i, self.y - i):
                 break
 
             piece = board.get_piece_position(self.x + i, self.y - i)
@@ -40,21 +40,21 @@ class Piece:
             if piece != "-":
                 break
         for i in range(1, board.x):
-            if not board.is_piece_blocked(self.x - i, self.y - i):
+            if not board.is_piece_blockaded(self.x - i, self.y - i):
                 break
             piece = board.get_piece_position(self.x - i, self.y - i)
             moves.append(self.initialize_move(board, self.x - i, self.y - i))
             if piece != "-":
                 break
         for i in range(1, board.x):
-            if not board.is_piece_blocked(self.x - i, self.y + i):
+            if not board.is_piece_blockaded(self.x - i, self.y + i):
                 break
             piece = board.get_piece_position(self.x - i, self.y + i)
             moves.append(self.initialize_move(board, self.x - i, self.y + i))
             if piece:
                 break
         for i in range(1, board.x):
-            if not board.is_piece_blocked(self.x + i, self.y + i):
+            if not board.is_piece_blockaded(self.x + i, self.y + i):
                 break
             piece = board.get_piece_position(self.x + i, self.y + i)
             moves.append(self.initialize_move(board, self.x + i, self.y + i))
@@ -132,6 +132,14 @@ class Knight(Piece):
     def get_possible_moves(self, board) -> list:
         """Getting possible moves for piece"""
         moves = []
+        moves.append(self.initialize_move(board, self.x - 1, self.y + 2))
+        moves.append(self.initialize_move(board, self.x + 2, self.y - 1))
+        moves.append(self.initialize_move(board, self.x + 1, self.y + 2))
+        moves.append(self.initialize_move(board, self.x + 2, self.y + 1))
+        moves.append(self.initialize_move(board, self.x - 2, self.y + 1))
+        moves.append(self.initialize_move(board, self.x - 2, self.y - 1))
+        moves.append(self.initialize_move(board, self.x - 1, self.y - 2))
+        moves.append(self.initialize_move(board, self.x + 1, self.y - 2))
         return moves
 
     def clone(self):

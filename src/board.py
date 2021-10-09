@@ -1,4 +1,4 @@
-import pieces
+import pieces, tables, move
 
 
 class Board:
@@ -58,30 +58,32 @@ class Board:
             situation += "\n"
         return situation + "\n"
 
-    def move_piece_to_position(self, turn) -> None:
-        """Moving a piece on a certain position to some new position"""
-        # example: a2-a3
+    def convert_turn_string_to_move_coord(self, turn) -> move.Move:
+        """Converting an input string (example: 'a2-a3') to be returned as Move data structure"""
         [old_position, new_position] = turn.split("-")
         [old_position_char, old_position_num] = list(old_position)
         [new_position_char, new_position_num] = list(new_position)
-        self.positions_table[ord(old_position_char) - 97][-int(old_position_num)].x = (
-            ord(new_position_char) - 97
+        return move.Move(
+            ord(old_position_char) - 97,
+            self.y - int(old_position_num),
+            ord(new_position_char) - 97,
+            self.y - int(new_position_num),
         )
-        self.positions_table[ord(old_position_char) - 97][
-            -int(old_position_num)
-        ].y = -int(new_position_num)
-        self.positions_table[ord(new_position_char) - 97][
-            -int(new_position_num)
-        ] = self.positions_table[ord(old_position_char) - 97][-int(old_position_num)]
-        self.positions_table[ord(old_position_char) - 97][-int(old_position_num)] = "-"
 
-    def get_piece_position(self, x, y):
+    def move_piece_to_position(self, mv) -> None:
+        """Moving a piece on a certain position to some new position"""
+        self.positions_table[mv.xfrom][mv.yfrom].x = mv.xto
+        self.positions_table[mv.xfrom][mv.yfrom].y = mv.yto
+        self.positions_table[mv.xto][mv.yto] = self.positions_table[mv.xfrom][mv.yfrom]
+        self.positions_table[mv.xfrom][mv.yfrom] = "-"
+
+    def get_piece_position(self, x, y) -> str or pieces.Piece:
         """Returning the current piece position on board"""
-        if not self.is_piece_blocked(x, y):
+        if not self.is_piece_blockaded(x, y):
             return
         return self.positions_table[x][y]
 
-    def is_piece_blocked(self, x, y) -> bool:
+    def is_piece_blockaded(self, x, y) -> bool:
         """Checking if piece is blocked"""
         return x < self.x and y < self.y and x >= 0 and y >= 0
 
@@ -108,3 +110,29 @@ class Board:
                     piece_clone = piece.clone()
                     cloned_positions_table[x][y] = piece_clone
         return Board(self.x, self.y, cloned_positions_table)
+
+    def evaluate_board(self) -> int:
+        """Gathering the results of evaluation of possible positions of pieces"""
+        pawns = self.evaluate_piece_positions("pawn", tables.pawn_table)
+        knights = self.evaluate_piece_positions("knight", tables.knight_table)
+        bishops = self.evaluate_piece_positions("bighop", tables.bishop_table)
+        rooks = self.evaluate_piece_positions("rook", tables.rook_table)
+        queens = self.evaluate_piece_positions("queen", tables.queen_table)
+        #print(pawns + knights + bishops + rooks + queens)
+        return sum([pawns, knights, bishops, rooks, queens])
+
+    def evaluate_piece_positions(self, piece_type, tbl) -> int:
+        """Evaluating of possible positions of pieces"""
+        white_pieces = 0
+        black_pieces = 0
+        for x in range(self.x):
+            for y in range(self.y):
+                piece = self.positions_table[x][y]
+                if piece != "-":
+                    if piece.type == piece_type:
+                        if piece.color == "white":
+                            white_pieces += tbl[x][y]
+                        else:
+                            black_pieces += tbl[self.x - x - 1][y]
+
+        return white_pieces - black_pieces
