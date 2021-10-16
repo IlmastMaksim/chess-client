@@ -8,7 +8,7 @@ This project is developed for Data Structures Lab course by University of Helsin
 - [Implementation document](./documentation/implementation.md)
 - [Testing](./documentation/testing.md)
 - [User guide](./documentation/user_guide.md)
-- [Week reports](./documentation/week_reports.md)
+- [Week reports](./documentation/week_reports)
 
 ## Commands
 
