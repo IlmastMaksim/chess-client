@@ -5,7 +5,6 @@
 - Minimax
 - Alpha–beta pruning
 - Game tree
-- *TBD*
 
 ## Problem to solve
 

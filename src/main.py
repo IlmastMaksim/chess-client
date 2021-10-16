@@ -1,32 +1,26 @@
 import board, server
 
+class Game:
+    """Class, that is in charge for initializing and running the game"""
+    def __init__(self) -> None:
+        self.board = board.Board(8, 8)  
+        self.server = server.Server()
+    
+    def run(self) -> None:
+        """Initializing and running the game"""
+        self.board.initialize_game()
+        while True:
+            print(self.board.draw_situation())
+            player_turn = input("Enter your move (e.g e2-e3): ")
+            try:
+                move = self.board.convert_turn_string_to_move_coord(player_turn)
+                self.board.move_piece_to_position(move)
+                evaluated_optimal_move = self.server.evaluate_optimal_move(self.board)
+                self.board.move_piece_to_position(evaluated_optimal_move)
+            except:
+                print("Irrelevant input, please try again")
+
+
 if __name__ == "__main__":
-    initialized_board = board.Board(8, 8)
-    serv = server.Server()
-    initialized_board.initialize_game()
-    move = initialized_board.convert_turn_string_to_move_coord("a2-a3")
-    initialized_board.move_piece_to_position(move)
-    # print(initialized_board.draw_situation())
-    # print(initialized_board.get_possible_moves())
-    evaluated_optimal_move = serv.evaluate_optimal_move(initialized_board)
-    print(evaluated_optimal_move)
-    initialized_board.move_piece_to_position(evaluated_optimal_move)
-    print(initialized_board.draw_situation())
-    """ move = initialized_board.convert_turn_string_to_move_coord("b2-b3")
-    initialized_board.move_piece_to_position(move)
-    evaluated_optimal_move = serv.evaluate_optimal_move(initialized_board)
-    initialized_board.move_piece_to_position(evaluated_optimal_move)
-    print(initialized_board.draw_situation())
-    move = initialized_board.convert_turn_string_to_move_coord("g2-g3")
-    initialized_board.move_piece_to_position(move)
-    evaluated_optimal_move = serv.evaluate_optimal_move(initialized_board)
-    initialized_board.move_piece_to_position(evaluated_optimal_move)
-    print(initialized_board.draw_situation())
-    move = initialized_board.convert_turn_string_to_move_coord("g1-f3")
-    initialized_board.move_piece_to_position(move)
-    evaluated_optimal_move = serv.evaluate_optimal_move(initialized_board)
-    initialized_board.move_piece_to_position(evaluated_optimal_move)
-    print(initialized_board.draw_situation()) """
-    # while True:
-    #    turn = input("Type your turn: ")
-    #    initialized_board.draw_situation()
+    game = Game()
+    game.run()

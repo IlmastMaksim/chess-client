@@ -13,12 +13,13 @@ class Piece:
 
     def stringify(self) -> str:
         """Getting a string out of piece"""
-        return self.color[0] + self.type[0]
+        piece_type = self.type[1] if self.type == "knight" else self.type[0]
+        return self.color[0] + piece_type
 
     def initialize_move(self, board, xto, yto) -> move.Move:
         """Checking if possible to create move for piece on position and creating if is"""
         initialized_move = 0
-        if board.is_piece_blockaded(xto, yto):
+        if board.is_piece_bound(xto, yto):
             piece = board.get_piece_position(xto, yto)
             if piece != "-":
                 if piece.color != self.color:
@@ -32,7 +33,7 @@ class Piece:
         moves = []
 
         for i in range(1, board.x):
-            if not board.is_piece_blockaded(self.x + i, self.y - i):
+            if not board.is_piece_bound(self.x + i, self.y - i):
                 break
 
             piece = board.get_piece_position(self.x + i, self.y - i)
@@ -40,21 +41,21 @@ class Piece:
             if piece != "-":
                 break
         for i in range(1, board.x):
-            if not board.is_piece_blockaded(self.x - i, self.y - i):
+            if not board.is_piece_bound(self.x - i, self.y - i):
                 break
             piece = board.get_piece_position(self.x - i, self.y - i)
             moves.append(self.initialize_move(board, self.x - i, self.y - i))
             if piece != "-":
                 break
         for i in range(1, board.x):
-            if not board.is_piece_blockaded(self.x - i, self.y + i):
+            if not board.is_piece_bound(self.x - i, self.y + i):
                 break
             piece = board.get_piece_position(self.x - i, self.y + i)
             moves.append(self.initialize_move(board, self.x - i, self.y + i))
             if piece:
                 break
         for i in range(1, board.x):
-            if not board.is_piece_blockaded(self.x + i, self.y + i):
+            if not board.is_piece_bound(self.x + i, self.y + i):
                 break
             piece = board.get_piece_position(self.x + i, self.y + i)
             moves.append(self.initialize_move(board, self.x + i, self.y + i))
@@ -105,16 +106,16 @@ class Pawn(Piece):
         if self.color == "black":
             direction = 1
 
-        piece = board.get_piece_position(self.x + 1, self.y + direction)
+        piece = board.get_piece_position(self.x, self.y + direction)
         if piece:
-            moves.append(self.initialize_move(board, self.x + 1, self.y + direction))
+            moves.append(self.initialize_move(board, self.x, self.y + direction))
 
         if board.get_piece_position(self.x, self.y + direction) == 0:
             moves.append(self.initialize_move(board, self.x, self.y + direction))
 
-        piece = board.get_piece_position(self.x - 1, self.y + direction)
+        piece = board.get_piece_position(self.x, self.y + direction)
         if piece:
-            moves.append(self.initialize_move(board, self.x - 1, self.y + direction))
+            moves.append(self.initialize_move(board, self.x, self.y + direction))
 
         return moves
 

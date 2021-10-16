@@ -79,11 +79,11 @@ class Board:
 
     def get_piece_position(self, x, y) -> str or pieces.Piece:
         """Returning the current piece position on board"""
-        if not self.is_piece_blockaded(x, y):
+        if not self.is_piece_bound(x, y):
             return
         return self.positions_table[x][y]
 
-    def is_piece_blockaded(self, x, y) -> bool:
+    def is_piece_bound(self, x, y) -> bool:
         """Checking if piece is blocked"""
         return x < self.x and y < self.y and x >= 0 and y >= 0
 

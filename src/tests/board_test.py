@@ -32,7 +32,7 @@ class BoardTest(unittest.TestCase):
     def test_get_possible_moves(self):
         self.board.initialize_game()
         moves = self.board.get_possible_moves()
-        self.assertEqual(len(moves), 18)
+        self.assertEqual(len(moves), 20)
 
     def test_evaluate_piece_positions(self):
         self.board.initialize_game()
