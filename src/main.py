@@ -18,7 +18,7 @@ class Game:
                 evaluated_optimal_move = self.server.evaluate_optimal_move(self.board)
                 self.board.move_piece_to_position(evaluated_optimal_move)
             except:
-                print("Irrelevant input, please try again")
+                print()
 
 
 if __name__ == "__main__":
