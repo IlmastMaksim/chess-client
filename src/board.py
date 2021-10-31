@@ -95,8 +95,6 @@ class Board:
                 piece = self.positions_table[x][y]
                 if piece != "-":
                     if piece.color == color:
-                        # if piece.type == "pawn":
-                        # print(piece)
                         moves += piece.get_possible_moves(self.clone())
         return list(filter(lambda move: move != 0, moves))
 
@@ -118,7 +116,7 @@ class Board:
         bishops = self.evaluate_piece_positions("bighop", tables.bishop_table)
         rooks = self.evaluate_piece_positions("rook", tables.rook_table)
         queens = self.evaluate_piece_positions("queen", tables.queen_table)
-        # print(pawns + knights + bishops + rooks + queens)
+
         return sum([pawns, knights, bishops, rooks, queens])
 
     def evaluate_piece_positions(self, piece_type, tbl) -> int:

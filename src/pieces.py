@@ -111,13 +111,9 @@ class Pawn(Piece):
         else:
             if self.y != 8 - 2:
                 self.is_in_starting_pos = False
-        # print(self.is_in_starting_pos)
 
         piece = board.get_piece_position(self.x, self.y + direction)
         if piece:
-            moves.append(self.initialize_move(board, self.x, self.y + direction))
-
-        if board.get_piece_position(self.x, self.y + direction) == 0:
             moves.append(self.initialize_move(board, self.x, self.y + direction))
 
         two_cells_move = self.y + direction * 2
