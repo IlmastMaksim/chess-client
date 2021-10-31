@@ -58,7 +58,7 @@ class Board:
             situation += "\n"
         return situation + "\n"
 
-    def convert_turn_string_to_move_coord(self, turn) -> move.Move:
+    def convert_string_to_move(self, turn) -> move.Move:
         """Converting an input string (example: 'a2-a3') to be returned as Move data structure"""
         [old_position, new_position] = turn.split("-")
         [old_position_char, old_position_num] = list(old_position)
@@ -118,7 +118,7 @@ class Board:
         bishops = self.evaluate_piece_positions("bighop", tables.bishop_table)
         rooks = self.evaluate_piece_positions("rook", tables.rook_table)
         queens = self.evaluate_piece_positions("queen", tables.queen_table)
-        #print(pawns + knights + bishops + rooks + queens)
+        # print(pawns + knights + bishops + rooks + queens)
         return sum([pawns, knights, bishops, rooks, queens])
 
     def evaluate_piece_positions(self, piece_type, tbl) -> int:
@@ -136,3 +136,20 @@ class Board:
                             black_pieces += tbl[self.x - x - 1][y]
 
         return white_pieces - black_pieces
+
+    def check_for_checkmate(self):
+        """Checking whether the checkmate happened"""
+        checker = []
+        for x in range(self.x):
+            for y in range(self.y):
+                piece = self.positions_table[x][y]
+                if piece != "-":
+                    if piece.type == "king":
+                        checker.append(piece.color)
+        if len(checker) == 2:
+            return ""
+        else:
+            if checker[0] == "black":
+                return "Game Over! Black wins"
+            else:
+                return "Game Over! White wins"

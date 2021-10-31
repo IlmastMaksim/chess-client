@@ -12,9 +12,7 @@ class Server:
             cloned_board = board_param.clone()
             cloned_board.move_piece_to_position(possible_move)
 
-            score = self.alphabeta(
-                cloned_board, 2, -999999, 999999, True
-            )
+            score = self.alphabeta(cloned_board, 2, -999999, 999999, True)
             if score < optimal_score:
                 optimal_score = score
                 optimal_move = possible_move
@@ -40,9 +38,7 @@ class Server:
 
                 optimal_score = max(
                     optimal_score,
-                    self.alphabeta(
-                        cloned_board, depth - 1, alpha, beta, False
-                    ),
+                    self.alphabeta(cloned_board, depth - 1, alpha, beta, False),
                 )
                 alpha = max(alpha, optimal_score)
                 if beta <= alpha:
@@ -56,9 +52,7 @@ class Server:
 
                 optimal_score = min(
                     optimal_score,
-                    self.alphabeta(
-                        cloned_board, depth - 1, alpha, beta, True
-                    ),
+                    self.alphabeta(cloned_board, depth - 1, alpha, beta, True),
                 )
                 beta = min(beta, optimal_score)
                 if beta <= alpha:

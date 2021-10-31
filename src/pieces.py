@@ -96,7 +96,8 @@ class Pawn(Piece):
     """Class, that corresponds to a pawn piece"""
 
     def __init__(self, x, y, color) -> None:
-        super(Pawn, self).__init__(x, y, color, "pawn", 100)
+        super().__init__(x, y, color, "pawn", 100)
+        self.is_in_starting_pos = True
 
     def get_possible_moves(self, board) -> list:
         """Getting possible moves for piece"""
@@ -105,6 +106,12 @@ class Pawn(Piece):
         direction = -1
         if self.color == "black":
             direction = 1
+            if self.y != 1:
+                self.is_in_starting_pos = False
+        else:
+            if self.y != 8 - 2:
+                self.is_in_starting_pos = False
+        # print(self.is_in_starting_pos)
 
         piece = board.get_piece_position(self.x, self.y + direction)
         if piece:
@@ -113,9 +120,22 @@ class Pawn(Piece):
         if board.get_piece_position(self.x, self.y + direction) == 0:
             moves.append(self.initialize_move(board, self.x, self.y + direction))
 
-        piece = board.get_piece_position(self.x, self.y + direction)
-        if piece:
-            moves.append(self.initialize_move(board, self.x, self.y + direction))
+        two_cells_move = self.y + direction * 2
+
+        if (
+            self.is_in_starting_pos
+            and board.get_piece_position(self.x, self.y + direction) == "-"
+            and board.get_piece_position(self.x, two_cells_move) == "-"
+        ):
+            moves.append(self.initialize_move(board, self.x, two_cells_move))
+
+        piece = board.get_piece_position(self.x + 1, self.y + direction)
+        if piece != "-":
+            moves.append(self.initialize_move(board, self.x + 1, self.y + direction))
+
+        piece = board.get_piece_position(self.x - 1, self.y + direction)
+        if piece != "-":
+            moves.append(self.initialize_move(board, self.x - 1, self.y + direction))
 
         return moves
 
@@ -128,7 +148,7 @@ class Knight(Piece):
     """Class, that corresponds to a knight piece"""
 
     def __init__(self, x, y, color) -> None:
-        super(Knight, self).__init__(x, y, color, "knight", 280)
+        super().__init__(x, y, color, "knight", 280)
 
     def get_possible_moves(self, board) -> list:
         """Getting possible moves for piece"""
@@ -152,7 +172,7 @@ class Bishop(Piece):
     """Class, that corresponds to a bishop piece"""
 
     def __init__(self, x, y, color) -> None:
-        super(Bishop, self).__init__(x, y, color, "bishop", 320)
+        super().__init__(x, y, color, "bishop", 320)
 
     def get_possible_moves(self, board) -> list:
         """Getting possible moves for piece"""
@@ -167,7 +187,7 @@ class Rook(Piece):
     """Class, that corresponds to a rook piece"""
 
     def __init__(self, x, y, color) -> None:
-        super(Rook, self).__init__(x, y, color, "rook", 479)
+        super().__init__(x, y, color, "rook", 479)
 
     def get_possible_moves(self, board) -> list:
         """Getting possible moves for piece"""
@@ -182,7 +202,7 @@ class Queen(Piece):
     """Class, that corresponds to a queen piece"""
 
     def __init__(self, x, y, color) -> None:
-        super(Queen, self).__init__(x, y, color, "queen", 929)
+        super().__init__(x, y, color, "queen", 929)
 
     def get_possible_moves(self, board) -> list:
         """Getting possible moves for piece"""
@@ -199,7 +219,7 @@ class King(Piece):
     """Class, that corresponds to a king piece"""
 
     def __init__(self, x, y, color) -> None:
-        super(King, self).__init__(x, y, color, "king", 60000)
+        super().__init__(x, y, color, "king", 60000)
 
     def get_possible_moves(self, board) -> list:
         """Getting possible moves for piece"""
